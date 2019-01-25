@@ -24,6 +24,15 @@ public class ArrayDeque<T> {
         last = size;
     }
 
+    private void shrink() {
+        T[] smallerArray = (T[]) new Object[capacity / 2];
+        copyTo(smallerArray);
+        array = smallerArray;
+        capacity = capacity / 2;
+        first = capacity - 1;
+        last = size;
+    }
+
     public ArrayDeque() {
         array = (T[]) new Object[capacity];
     }
@@ -77,7 +86,11 @@ public class ArrayDeque<T> {
         }
         size--;
         first = (first + 1) % capacity;
-        return array[first];
+        T res = array[first];
+        if((size * 1.0 / capacity) < 0.251){
+            shrink();
+        }
+        return res;
     }
 
     public T removeLast() {
@@ -86,7 +99,11 @@ public class ArrayDeque<T> {
         }
         size--;
         last = last - 1 < 0 ? capacity - 1 : last - 1;
-        return array[last];
+        T res = array[last];
+        if((size * 1.0 / capacity) < 0.251){
+            shrink();
+        }
+        return res;
     }
 
     public T get(int index) {
@@ -115,12 +132,11 @@ public class ArrayDeque<T> {
 //
 //        a.removeFirst();
 //        a.removeLast();
+//        a.removeLast();
+//        a.removeLast();
+//        a.removeLast();
+//        a.removeLast();
 //        a.printDeque();
-//        a.removeFirst();
-//        a.removeFirst();
-//        a.removeFirst();
-//        a.removeFirst();
-//        a.printDeque();
-//        System.out.println(a.get(2));
+//        System.out.println(a.capacity);
 //    }
 }
