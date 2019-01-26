@@ -40,8 +40,9 @@ public class LinkedListDeque<T> {
     }
 
     public boolean isEmpty() {
-        if (this.totalSize == 0)
+        if (this.totalSize == 0) {
             return true;
+        }
         return false;
     }
 
@@ -64,8 +65,9 @@ public class LinkedListDeque<T> {
     }
 
     public T removeFirst() {
-        if (totalSize == 0)
+        if (totalSize == 0) {
             return null;
+        }
         totalSize--;
         T item = sentinel.next.item;
         sentinel.next = sentinel.next.next;
@@ -74,8 +76,9 @@ public class LinkedListDeque<T> {
     }
 
     public T removeLast() {
-        if (totalSize == 0)
+        if (totalSize == 0) {
             return null;
+        }
         totalSize--;
         T item = sentinel.prev.item;
         sentinel.prev.prev.next = sentinel;

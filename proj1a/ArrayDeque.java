@@ -69,8 +69,9 @@ public class ArrayDeque<T> {
     }
 
     public void printDeque() {
-        if(size == 0)
+        if (size == 0) {
             return;
+        }
         int index = (first + 1) % capacity;
         int tempSize = size;
         while ((tempSize--) > 1) {
@@ -87,7 +88,7 @@ public class ArrayDeque<T> {
         size--;
         first = (first + 1) % capacity;
         T res = array[first];
-        if((size * 1.0 / capacity) < 0.251){
+        if ((size * 1.0 / capacity) < 0.251) {
             shrink();
         }
         return res;
@@ -100,7 +101,7 @@ public class ArrayDeque<T> {
         size--;
         last = last - 1 < 0 ? capacity - 1 : last - 1;
         T res = array[last];
-        if((size * 1.0 / capacity) < 0.251){
+        if ((size * 1.0 / capacity) < 0.251) {
             shrink();
         }
         return res;
