@@ -16,5 +16,11 @@ public class TestOffByOne {
         char x3 = 'c';
         char y3 = 'c';
         assertFalse(offByOne.equalChars(x3, y3));
+        char x4 = 'A';
+        char y4 = 'b';
+        assertFalse(offByOne.equalChars(x4, y4));
+        char x5 = '&';
+        char y5 = '%';
+        assertTrue(offByOne.equalChars(x5, y5));
     }
 }
