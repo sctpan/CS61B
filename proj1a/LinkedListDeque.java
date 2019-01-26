@@ -110,15 +110,4 @@ public class LinkedListDeque<T> {
         }
         return getRecursiveHelper(index, sentinel.next);
     }
-
-//	public static void main(String[] args) {
-//		System.out.println("Running tests.");
-//		LinkedListDeque<Integer> linkedList = new LinkedListDeque<Integer>();
-//        linkedList.addLast(0);
-//        linkedList.addLast(1);
-//        linkedList.addLast(2);
-//        System.out.println(linkedList.removeLast());
-//    	linkedList.printDeque();
-//		System.out.println("tests over.");
-//	}
 }
