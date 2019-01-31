@@ -49,10 +49,10 @@ public class TestComplexOomage {
     }
 
     private static ComplexOomage deadRandomComplexOomage() {
-        int N = StdRandom.uniform(1, 10);
+        int N = StdRandom.uniform(5, 10);
         ArrayList<Integer> params = new ArrayList<>(N);
         for (int i = 0; i < N; i += 1) {
-            params.add(1);
+            params.add(StdRandom.uniform(0, 51) * 5);
         }
         return new ComplexOomage(params);
     }

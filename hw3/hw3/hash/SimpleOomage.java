@@ -35,10 +35,13 @@ public class SimpleOomage implements Oomage {
         if (!USE_PERFECT_HASH) {
             return red + green + blue;
         } else {
-            int hash = 17;
-            hash = hash * 31 + red / 5;
-            hash = hash * 31 + green / 5;
-            hash = hash * 31 + blue / 5;
+            int hash = 0;
+            int redCode = red < 5 ? -1 * red : red / 5;
+            int greenCode = green < 5 ? -1 * green : green / 5;
+            int blueCode = blue < 5 ? -1 * blue : blue / 5;
+            hash = hash * 256 + redCode;
+            hash = hash * 256 + greenCode;
+            hash = hash * 256 + blueCode;
             return hash;
         }
     }
