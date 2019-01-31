@@ -6,6 +6,7 @@ import java.util.Set;
 
 /**
  * An array based implementation of the Map61B class.
+ *
  * @author Josh Hug (mostly done in lecture)
  */
 public class ArrayMap<K, V> implements Map61B<K, V> {
@@ -19,8 +20,10 @@ public class ArrayMap<K, V> implements Map61B<K, V> {
         size = 0;
     }
 
-    /** Returns the index of the given key if it exists,
-     *  -1 otherwise. */
+    /**
+     * Returns the index of the given key if it exists,
+     * -1 otherwise.
+     */
     private int keyIndex(K key) {
         for (int i = 0; i < size; i += 1) {
             if (keys[i].equals(key)) {
