@@ -123,7 +123,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         validateSinkSwimArg(index);
         Node curr = getNode(index);
         int childIndex = min(leftIndex(index), rightIndex(index));
-        if(!inBounds(childIndex)) {
+        if (!inBounds(childIndex)) {
             return;
         }
         Node child = getNode(childIndex);
@@ -176,7 +176,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         Node smallest = contents[1];
         contents[1] = contents[size];
         size--;
-        if(size == 0) {
+        if (size == 0) {
             return null;
         }
         sink(1);
