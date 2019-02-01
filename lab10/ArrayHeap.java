@@ -179,10 +179,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         Node smallest = contents[1];
         contents[1] = contents[size];
         size--;
-        if (size == 0) {
-            return null;
+        if (size != 0) {
+            sink(1);
         }
-        sink(1);
         return smallest.myItem;
     }
 
