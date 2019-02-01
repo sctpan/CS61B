@@ -102,14 +102,14 @@ public class Percolation {
         return false;
     }
 
-//    public static void main(String[] args) {
-//        Percolation system = new Percolation(4);
-//        system.open(0,0);
-//        system.open(1,0);
-//        system.open(1,1);
-//        system.open(2,1);
-//        system.open(3,1);
-//        System.out.println(system.percolates());
-//    }
+    public static void main(String[] args) {
+        Percolation system = new Percolation(4);
+        system.open(0, 0);
+        system.open(1, 0);
+        system.open(1, 1);
+        system.open(2, 1);
+        system.open(3, 1);
+        System.out.println(system.percolates());
+    }
 
 }

@@ -7,7 +7,7 @@ public class PercolationStats {
     private int T;
     private int N;
     private double[] threshold;
-    Percolation system;
+    private Percolation system;
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
         if (N <= 0 || T <= 0) {
@@ -22,7 +22,7 @@ public class PercolationStats {
                 int site = pickRandomSite();
                 system.open(site / N, site % N);
             } while (!system.percolates());
-            threshold[i] = system.numberOfOpenSites();
+            threshold[i] = system.numberOfOpenSites() * 1.0 / (N * N);
         }
     }
 
@@ -48,6 +48,12 @@ public class PercolationStats {
 
     public double confidenceHigh() {
         return mean() + (1.96 * stddev() / Math.sqrt(T));
+    }
+
+    public static void main(String[] args) {
+        PercolationStats mentcalo = new PercolationStats(20, 10, new PercolationFactory());
+        System.out.println(mentcalo.mean());
+        System.out.println(mentcalo.stddev());
     }
 
 }
