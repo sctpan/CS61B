@@ -2,27 +2,32 @@ package hw2;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class Percolation {
     private WeightedQuickUnionUF uf;
+    // pretty stupid idea to prevent backwash...
+    private WeightedQuickUnionUF noBackWashUf;
     private boolean[] status;
     private int openSiteNum;
     private int N;
-    private Set<Integer> top = new HashSet();
-    private Set<Integer> bottom = new HashSet();
+    private int vtop;
+    private int vbottom;
 
     public Percolation(int N) {
         if (N <= 0) {
             throw new java.lang.IllegalArgumentException();
         }
-        uf = new WeightedQuickUnionUF(N * N);
+        uf = new WeightedQuickUnionUF(N * N + 2);
+        noBackWashUf = new WeightedQuickUnionUF(N * N + 1);
         status = new boolean[N * N];
         for (int i = 0; i < N * N; i++) {
             status[i] = false;
         }
         this.N = N;
+        vbottom = N * N + 1;
+        vtop = N * N;
+        for (int i = 0; i < N; i++) {
+            noBackWashUf.union(i, vtop);
+        }
     }
 
     private int getPos(int row, int col) {
@@ -37,6 +42,12 @@ public class Percolation {
         openSiteNum++;
         int pos = getPos(row, col);
         status[pos] = true;
+        if (row == 0) {
+            uf.union(vtop, pos);
+        }
+        if (row == N - 1) {
+            uf.union(vbottom, pos);
+        }
         int[] colDir = {-1, 1, 0, 0};
         int[] rowDir = {0, 0, -1, 1};
         for (int i = 0; i < 4; i++) {
@@ -48,17 +59,8 @@ public class Percolation {
             int newPos = getPos(newRow, newCol);
             if (isOpen(newRow, newCol)) {
                 uf.union(newPos, pos);
-                if (newRow == N - 1) {
-                    bottom.add(newPos);
-                } else if (newRow == 0) {
-                    top.add(newPos);
-                }
+                noBackWashUf.union(newPos, pos);
             }
-        }
-        if (row == N - 1) {
-            bottom.add(pos);
-        } else if (row == 0) {
-            top.add(pos);
         }
     }
 
@@ -73,12 +75,7 @@ public class Percolation {
             return false;
         }
         int pos = getPos(row, col);
-        for (int t : top) {
-            if (uf.connected(pos, t)) {
-                return true;
-            }
-        }
-        return false;
+        return noBackWashUf.connected(pos, vtop);
     }
 
     private void check(int row, int col) {
@@ -92,14 +89,7 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        for (int b : bottom) {
-            for (int t : top) {
-                if (uf.connected(b, t)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return uf.connected(vbottom, vtop);
     }
 
     public static void main(String[] args) {
