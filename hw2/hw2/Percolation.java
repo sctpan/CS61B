@@ -14,7 +14,7 @@ public class Percolation {
     private Set<Integer> bottom = new HashSet();
 
     public Percolation(int N) {
-        if (N < 0) {
+        if (N <= 0) {
             throw new java.lang.IllegalArgumentException();
         }
         uf = new WeightedQuickUnionUF(N * N);
