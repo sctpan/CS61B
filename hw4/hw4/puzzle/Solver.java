@@ -1,8 +1,12 @@
 package hw4.puzzle;
 
-import java.util.*;
 
 import edu.princeton.cs.algs4.MinPQ;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 public class Solver {
     private List<WorldState> solution = new ArrayList();

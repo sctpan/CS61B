@@ -13,7 +13,7 @@ public class Board implements WorldState {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 this.tiles[i][j] = tiles[i][j];
-                if (i == N - 1 && j == N - 1) {
+                if (tiles[i][j] == 0) {
                     continue;
                 }
                 if (this.tiles[i][j] != i * N + j + 1) {
@@ -89,7 +89,7 @@ public class Board implements WorldState {
         int num = 0;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if (i == N - 1 && j == N - 1) {
+                if (tiles[i][j] == 0) {
                     continue;
                 }
                 if (tiles[i][j] != i * N + j + 1) {
@@ -130,12 +130,22 @@ public class Board implements WorldState {
         return true;
     }
 
-    public String toString() {
-        StringBuilder s = new StringBuilder();
-        int N = size();
-        s.append(N + "\n");
+    public int hashCode() {
+        int sum = 0;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
+                sum = (sum + tiles[i][j]) * 31;
+            }
+        }
+        return sum;
+    }
+
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        int size = size();
+        s.append(size + "\n");
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 s.append(String.format("%2d ", tileAt(i, j)));
             }
             s.append("\n");
