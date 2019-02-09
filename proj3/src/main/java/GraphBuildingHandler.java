@@ -63,12 +63,12 @@ public class GraphBuildingHandler extends DefaultHandler {
      * Called at the beginning of an element. Typically, you will want to handle each element in
      * here, and you may want to track the parent element.
      *
-     * @param uri        The Namespace URI, or the empty string if the element has no Namespace URI or
-     *                   if Namespace processing is not being performed.
+     * @param uri        The Namespace URI, or the empty string if the element has no
+     *                   Namespace URI or if Namespace processing is not being performed.
      * @param localName  The local name (without prefix), or the empty string if Namespace
      *                   processing is not being performed.
-     * @param qName      The qualified name (with prefix), or the empty string if qualified names are
-     *                   not available. This tells us which element we're looking at.
+     * @param qName      The qualified name (with prefix), or the empty string if qualified
+     *                   names are not available. This tells us which element we're looking at.
      * @param attributes The attributes attached to the element. If there are no attributes, it
      *                   shall be an empty Attributes object.
      * @throws SAXException Any SAX exception, possibly wrapping another exception.
@@ -142,8 +142,8 @@ public class GraphBuildingHandler extends DefaultHandler {
      * Receive notification of the end of an element. You may want to take specific terminating
      * actions here, like finalizing vertices or edges found.
      *
-     * @param uri       The Namespace URI, or the empty string if the element has no Namespace URI or
-     *                  if Namespace processing is not being performed.
+     * @param uri       The Namespace URI, or the empty string if the element has no
+     *                  Namespace URI or if Namespace processing is not being performed.
      * @param localName The local name (without prefix), or the empty string if Namespace
      *                  processing is not being performed.
      * @param qName     The qualified name (with prefix), or the empty string if qualified names are

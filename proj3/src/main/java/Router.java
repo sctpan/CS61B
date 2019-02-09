@@ -1,12 +1,13 @@
 import java.util.Comparator;
-import java.util.Stack;
-import java.util.HashMap;
 import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Objects;
 import java.util.HashSet;
+import java.util.Collections;
 
 /**
  * This class provides a shortestPath method for finding routes between two points
@@ -52,7 +53,7 @@ public class Router {
      */
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
-        Stack<Long> res = new Stack<>();
+        List<Long> res = new ArrayList<>();
         HashMap<String, Double> distTo = new HashMap<>();
         HashMap<String, String> edgeTo = new HashMap<>();
         HashSet<String> marked = new HashSet<>();
@@ -90,10 +91,11 @@ public class Router {
         }
         String tmp = target.getId();
         while (!tmp.equals(start.getId())) {
-            res.push(Long.parseLong(tmp));
+            res.add(Long.parseLong(tmp));
             tmp = edgeTo.get(tmp);
         }
-        res.push(Long.parseLong(start.getId()));
+        res.add(Long.parseLong(start.getId()));
+        Collections.reverse(res);
         return res;
     }
 
