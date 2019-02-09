@@ -31,8 +31,12 @@ public class Router {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             Status status = (Status) o;
             return this.node.getId().equals(status.node.getId());
         }
@@ -96,9 +100,9 @@ public class Router {
                     if (!distTo.containsKey(nid) || newDistance < distTo.get(nid)) {
                         distTo.put(nid, newDistance);
                         edgeTo.put(nid, currId);
-                        Status neighbor = new Status(node, distTo.get(nid) + h);
+                        Status neighbor = new Status(node, 0);
                         pq.remove(neighbor);
-                        pq.add(neighbor);
+                        pq.add(new Status(node, distTo.get(nid) + h));
                     }
                 }
             }
