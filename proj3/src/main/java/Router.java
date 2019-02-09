@@ -1,12 +1,12 @@
 import java.util.Comparator;
-import java.util.Collections;
-import java.util.ArrayList;
+import java.util.Stack;
 import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Objects;
+import java.util.HashSet;
 
 /**
  * This class provides a shortestPath method for finding routes between two points
@@ -52,10 +52,10 @@ public class Router {
      */
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
-        List<Long> res = new ArrayList<>();
+        Stack<Long> res = new Stack<>();
         HashMap<String, Double> distTo = new HashMap<>();
         HashMap<String, String> edgeTo = new HashMap<>();
-        HashMap<String, Boolean> marked = new HashMap<>();
+        HashSet<String> marked = new HashSet<>();
         PriorityQueue<Status> pq = new PriorityQueue<>(new StatusComparator());
         GraphDB.Node start = g.getNode(Long.toString(g.closest(stlon, stlat)));
         GraphDB.Node target = g.getNode(Long.toString(g.closest(destlon, destlat)));
@@ -67,33 +67,33 @@ public class Router {
             Status curr = pq.poll();
             String currId = curr.node.getId();
 //            System.out.println(currId);
-            marked.put(currId, true);
+            marked.add(currId);
             if (currId.equals(target.getId())) {
 //                System.out.println("bingo");
                 break;
             }
             for (String nid : curr.node.getNeighbors()) {
-                if (!marked.containsKey(nid)) {
-                    h = g.distance(g.getNode(nid).getLon(),
-                            g.getNode(nid).getLat(), destlon, destlat);
+                GraphDB.Node node = g.getNode(nid);
+                if (!marked.contains(nid)) {
+                    h = g.distance(node.getLon(),
+                            node.getLat(), destlon, destlat);
                     double newDistance = distTo.get(currId)
                             + g.distance(Long.parseLong(currId), Long.parseLong(nid));
                     if (!distTo.containsKey(nid) || newDistance < distTo.get(nid)) {
                         distTo.put(nid, newDistance);
                         edgeTo.put(nid, currId);
                     }
-                    Status neighbor = new Status(g.getNode(nid), distTo.get(nid) + h);
+                    Status neighbor = new Status(node, distTo.get(nid) + h);
                     pq.add(neighbor);
                 }
             }
         }
         String tmp = target.getId();
         while (!tmp.equals(start.getId())) {
-            res.add(Long.parseLong(tmp));
+            res.push(Long.parseLong(tmp));
             tmp = edgeTo.get(tmp);
         }
-        res.add(Long.parseLong(start.getId()));
-        Collections.reverse(res);
+        res.push(Long.parseLong(start.getId()));
         return res;
     }
 

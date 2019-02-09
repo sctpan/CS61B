@@ -6,10 +6,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -30,8 +27,8 @@ public class GraphDB {
      *
      * @param dbPath Path to the XML file to be parsed.
      */
-    private Map<String, Node> nodes = new LinkedHashMap<>();
-    private Map<String, Edge> edges = new LinkedHashMap<>();
+    private Map<String, Node> nodes = new HashMap<>();
+    private Map<String, Edge> edges = new HashMap<>();
 
     public class Node {
         private String id;
