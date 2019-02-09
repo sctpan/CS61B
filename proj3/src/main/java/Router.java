@@ -28,6 +28,19 @@ public class Router {
             this.node = node;
             this.priority = priority;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Status status = (Status) o;
+            return this.node.getId().equals(status.node.getId());
+        }
+
+        @Override
+        public int hashCode() {
+            return node.getId().hashCode();
+        }
     }
 
     private static class StatusComparator implements Comparator {
@@ -83,9 +96,10 @@ public class Router {
                     if (!distTo.containsKey(nid) || newDistance < distTo.get(nid)) {
                         distTo.put(nid, newDistance);
                         edgeTo.put(nid, currId);
+                        Status neighbor = new Status(node, distTo.get(nid) + h);
+                        pq.remove(neighbor);
+                        pq.add(neighbor);
                     }
-                    Status neighbor = new Status(node, distTo.get(nid) + h);
-                    pq.add(neighbor);
                 }
             }
         }
