@@ -8,18 +8,24 @@ import java.util.Map;
  * not draw the output correctly.
  */
 public class Rasterer {
-    public static final double topDPP = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / MapServer.TILE_SIZE;
+    public static final double TOP_DPP = 0.00034332275390625;
 
     private class QueryBox {
         private double ullon, ullat, lrlon, lrlat;
         private double w, h;
 
-        public QueryBox(double ullat, double ullon, double lrlat, double lrlon, double w, double h) {
+        public QueryBox(double ullat, double ullon, double lrlat, double lrlon) {
             this.ullon = ullon;
             this.ullat = ullat;
             this.lrlon = lrlon;
             this.lrlat = lrlat;
+        }
+
+        public void setW(double w) {
             this.w = w;
+        }
+
+        public void setH(double h) {
             this.h = h;
         }
     }
@@ -34,15 +40,6 @@ public class Rasterer {
             this.lrlat = lrlat;
         }
 
-        @Override
-        public String toString() {
-            return "Area{" +
-                    "ullon=" + ullon +
-                    ", ullat=" + ullat +
-                    ", lrlon=" + lrlon +
-                    ", lrlat=" + lrlat +
-                    '}';
-        }
     }
 
     private int depth;
@@ -102,14 +99,14 @@ public class Rasterer {
             }
         }
         getFilenames();
-//        System.out.println("d" + depth + "_x" + ulx + "_y" + uly + " to " + "d" + depth + "_x" + lrx + "_y" + lry);
     }
 
     private void getFilenames() {
         filenames = new String[lry - uly + 1][lrx - ulx + 1];
         for (int i = 0; i <= lry - uly; i++) {
             for (int j = 0; j <= lrx - ulx; j++) {
-                filenames[i][j] = "d" + depth + "_x" + (ulx + j) + "_y" + (uly + i) + ".png";
+                filenames[i][j] = "d" + depth + "_x" + (ulx + j)
+                        + "_y" + (uly + i) + ".png";
 //                System.out.print(filenames[i][j] + " ");
             }
 //            System.out.println("");
@@ -127,13 +124,13 @@ public class Rasterer {
         depth = 7;
     }
 
-    private double calDepthDPP(int depth) {
-        return topDPP / pow2(depth);
+    private double calDepthDPP(int dep) {
+        return TOP_DPP / pow2(dep);
     }
 
-    private Area getFileArea(int depth, int x, int y) {
-        double lonDelta = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / pow2(depth);
-        double latDelta = (MapServer.ROOT_ULLAT - MapServer.ROOT_LRLAT) / pow2(depth);
+    private Area getFileArea(int dep, int x, int y) {
+        double lonDelta = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / pow2(dep);
+        double latDelta = (MapServer.ROOT_ULLAT - MapServer.ROOT_LRLAT) / pow2(dep);
         double ullon = MapServer.ROOT_ULLON + x * lonDelta;
         double ullat = MapServer.ROOT_ULLAT - y * latDelta;
         double lrlon = ullon + lonDelta;
@@ -172,7 +169,13 @@ public class Rasterer {
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
         System.out.println(params);
         Map<String, Object> results = new HashMap<>();
-        QueryBox queryBox = new QueryBox(params.get("ullat"), params.get("ullon"), params.get("lrlat"), params.get("lrlon"), params.get("w"), params.get("h"));
+        double ullat = params.get("ullat");
+        double ullon = params.get("ullon");
+        double lrlat = params.get("lrlat");
+        double lrlon = params.get("lrlon");
+        QueryBox queryBox = new QueryBox(ullat, ullon, lrlat, lrlon);
+        queryBox.setH(params.get("h"));
+        queryBox.setW(params.get("w"));
         solve(queryBox);
         results.put("render_grid", filenames);
         results.put("raster_ul_lon", rasterUllon);

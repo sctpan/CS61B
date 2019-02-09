@@ -31,6 +31,11 @@ public class TestRasterer {
         rasterer = new Rasterer();
     }
 
+    @Test
+    public void testDPP() {
+        System.out.println((MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / MapServer.TILE_SIZE);
+    }
+
 //    @Test
 //    public void testSolve() {
 //        Rasterer.QueryBox queryBox = rasterer.new QueryBox(37.870213571328854,-122.30410170759153, 37.8318576119893, -122.2104604264636, 1085, 566);

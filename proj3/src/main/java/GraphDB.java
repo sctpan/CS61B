@@ -267,7 +267,8 @@ public class GraphDB {
      * @return The id of the node in the graph closest to the target.
      */
     long closest(double lon, double lat) {
-        double min = distance(MapServer.ROOT_ULLON, MapServer.ROOT_ULLAT, MapServer.ROOT_LRLON, MapServer.ROOT_LRLAT);
+        double min = distance(MapServer.ROOT_ULLON, MapServer.ROOT_ULLAT,
+                MapServer.ROOT_LRLON, MapServer.ROOT_LRLAT);
         String minId = null;
         for (String id : nodes.keySet()) {
             Node node = nodes.get(id);

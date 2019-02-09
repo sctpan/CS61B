@@ -1,6 +1,12 @@
-import java.util.*;
+import java.util.Comparator;
+import java.util.Collections;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Objects;
 
 /**
  * This class provides a shortestPath method for finding routes between two points
@@ -68,8 +74,10 @@ public class Router {
             }
             for (String nid : curr.node.getNeighbors()) {
                 if (!marked.containsKey(nid)) {
-                    h = g.distance(g.getNode(nid).getLon(), g.getNode(nid).getLat(), destlon, destlat);
-                    double newDistance = distTo.get(currId) + g.distance(Long.parseLong(currId), Long.parseLong(nid));
+                    h = g.distance(g.getNode(nid).getLon(),
+                            g.getNode(nid).getLat(), destlon, destlat);
+                    double newDistance = distTo.get(currId)
+                            + g.distance(Long.parseLong(currId), Long.parseLong(nid));
                     if (!distTo.containsKey(nid) || newDistance < distTo.get(nid)) {
                         distTo.put(nid, newDistance);
                         edgeTo.put(nid, currId);

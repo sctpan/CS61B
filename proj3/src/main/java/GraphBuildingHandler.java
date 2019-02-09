@@ -1,8 +1,18 @@
 import org.xml.sax.Attributes;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 import org.xml.sax.SAXException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.*;
+
+
+
+
+
 
 /**
  * Parses OSM XML files using an XML SAX parser. Used to construct the graph of roads for
@@ -116,8 +126,8 @@ public class GraphBuildingHandler extends DefaultHandler {
                 way.setName(v);
             }
 //            System.out.println("Tag with k=" + k + ", v=" + v + ".");
-        } else if (activeState.equals("node") && qName.equals("tag") && attributes.getValue("k")
-                .equals("name")) {
+        } else if (activeState.equals("node") && qName.equals("tag") && attributes
+                .getValue("k").equals("name")) {
             /* While looking at a node, we found a <tag...> with k="name". */
             /* Create a location. */
             /* Hint: Since we found this <tag...> INSIDE a node, we should probably remember which
