@@ -108,10 +108,18 @@ public class Router {
             }
         }
         String tmp = target.getId();
-        while (!tmp.equals(start.getId())) {
-            res.add(Long.parseLong(tmp));
-            tmp = edgeTo.get(tmp);
+        try {
+            while (!tmp.equals(start.getId())) {
+                res.add(Long.parseLong(tmp));
+                tmp = edgeTo.get(tmp);
+            }
+        } catch (NullPointerException e) {
+            System.out.println("tmp: " + tmp);
+            System.out.println("start: " + start.getId());
+            System.out.println("target: " + target.getId());
+            System.out.println("targetcurr: " + edgeTo.get(target.getId()));
         }
+
         res.add(Long.parseLong(start.getId()));
         Collections.reverse(res);
         return res;
