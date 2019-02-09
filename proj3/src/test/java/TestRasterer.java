@@ -31,6 +31,19 @@ public class TestRasterer {
         rasterer = new Rasterer();
     }
 
+//    @Test
+//    public void testSolve() {
+//        Rasterer.QueryBox queryBox = rasterer.new QueryBox(37.870213571328854,-122.30410170759153, 37.8318576119893, -122.2104604264636, 1085, 566);
+//        rasterer.solve(queryBox);
+//    }
+//
+//    @Test
+//    public void testGetFileArea() {
+//        Rasterer.Area area = rasterer.getFileArea(7,84,28);
+//        System.out.println(area);
+//    }
+
+
     @Test
     public void testGetMapRaster() throws Exception {
         List<Map<String, Double>> testParams = paramsFromFile();
