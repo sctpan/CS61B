@@ -7,6 +7,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -26,6 +29,80 @@ public class GraphDB {
      * You do not need to modify this constructor, but you're welcome to do so.
      * @param dbPath Path to the XML file to be parsed.
      */
+    private Map<String, Node> nodes = new LinkedHashMap<>();
+    private Map<String, Edge> edges = new LinkedHashMap<>();
+
+    public class Node {
+        private String id;
+        private double lon, lat;
+        private List<String> neighbors = new ArrayList<>();
+        private List<String> edges = new ArrayList<>();
+        private String location;
+
+        public Node(String id, double lon, double lat) {
+            this.id = id;
+            this.lon = lon;
+            this.lat = lat;
+        }
+
+        public void connect(String nid) {
+            neighbors.add(nid);
+        }
+
+        public void setEdge(String eid) {
+            edges.add(eid);
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
+    }
+
+    public class Edge {
+        private String id;
+        private int maxspeed;
+        private String name;
+        private boolean valid;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public int getMaxspeed() {
+            return maxspeed;
+        }
+
+        public void setMaxspeed(int maxspeed) {
+            this.maxspeed = maxspeed;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public boolean isValid() {
+            return valid;
+        }
+
+        public void setValid(boolean valid) {
+            this.valid = valid;
+        }
+    }
+
+    public Node getNode(String id) {
+        return nodes.get(id);
+    }
+
+
+
     public GraphDB(String dbPath) {
         try {
             File inputFile = new File(dbPath);
@@ -42,13 +119,24 @@ public class GraphDB {
         clean();
     }
 
+    public void addNode(Node node) {
+        nodes.put(node.id, node);
+    }
+
+    public void addEdge(Edge edge) {
+        edges.put(edge.id, edge);
+    }
+
     /**
      * Helper to process strings into their "cleaned" form, ignoring punctuation and capitalization.
      * @param s Input string.
      * @return Cleaned string.
      */
+//    static String cleanString(String s) {
+//        return s.replaceAll("[^a-zA-Z ]", "").toLowerCase();
+//    }
     static String cleanString(String s) {
-        return s.replaceAll("[^a-zA-Z ]", "").toLowerCase();
+        return s.trim().replaceAll("[a-zA-Z ]", "");
     }
 
     /**
@@ -57,7 +145,15 @@ public class GraphDB {
      *  we can reasonably assume this since typically roads are connected.
      */
     private void clean() {
-        // TODO: Your code here.
+        List<String> alones = new ArrayList<>();
+        for(String id : nodes.keySet()) {
+            if(nodes.get(id).neighbors.isEmpty()) {
+                alones.add(id);
+            }
+        }
+        for(String id : alones) {
+            nodes.remove(id);
+        }
     }
 
     /**
@@ -66,7 +162,11 @@ public class GraphDB {
      */
     Iterable<Long> vertices() {
         //YOUR CODE HERE, this currently returns only an empty list.
-        return new ArrayList<Long>();
+        List<Long> vertices = new ArrayList<Long>();
+        for(String id : nodes.keySet()) {
+            vertices.add(Long.parseLong(id));
+        }
+        return vertices;
     }
 
     /**
@@ -75,7 +175,12 @@ public class GraphDB {
      * @return An iterable of the ids of the neighbors of v.
      */
     Iterable<Long> adjacent(long v) {
-        return null;
+        List<Long> vertices = new ArrayList<Long>();
+        Node node = nodes.get(Long.toString(v));
+        for(String id : node.neighbors) {
+            vertices.add(Long.parseLong(id));
+        }
+        return vertices;
     }
 
     /**
@@ -136,7 +241,18 @@ public class GraphDB {
      * @return The id of the node in the graph closest to the target.
      */
     long closest(double lon, double lat) {
-        return 0;
+        double min = distance(MapServer.ROOT_ULLON, MapServer.ROOT_ULLAT, MapServer.ROOT_LRLON, MapServer.ROOT_LRLAT);
+        String minId = null;
+        for(String id : nodes.keySet()) {
+            Node node = nodes.get(id);
+            double nlon = node.lon;
+            double nlat = node.lat;
+            if(distance(lon, lat, nlon, nlat) < min) {
+                min = distance(lon, lat, nlon, nlat);
+                minId = node.id;
+            }
+        }
+        return Long.parseLong(minId);
     }
 
     /**
@@ -145,7 +261,8 @@ public class GraphDB {
      * @return The longitude of the vertex.
      */
     double lon(long v) {
-        return 0;
+        String id = Long.toString(v);
+        return nodes.get(id).lon;
     }
 
     /**
@@ -154,6 +271,7 @@ public class GraphDB {
      * @return The latitude of the vertex.
      */
     double lat(long v) {
-        return 0;
+        String id = Long.toString(v);
+        return nodes.get(id).lat;
     }
 }
