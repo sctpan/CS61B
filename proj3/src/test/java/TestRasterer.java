@@ -55,7 +55,7 @@ public class TestRasterer {
             Map<String, Object> actual = rasterer.getMapRaster(params);
             Map<String, Object> expected = expectedResults.get(i);
             String msg = "Your results did not match the expected results for input "
-                         + mapToString(params) + ".\n";
+                    + mapToString(params) + ".\n";
             checkParamsMap(msg, expected, actual);
         }
     }
@@ -109,10 +109,10 @@ public class TestRasterer {
     }
 
     private void checkParamsMap(String err, Map<String, Object> expected,
-                                            Map<String, Object> actual) {
+                                Map<String, Object> actual) {
         for (String key : expected.keySet()) {
             assertTrue(err + "Your results map is missing "
-                       + key, actual.containsKey(key));
+                    + key, actual.containsKey(key));
             Object o1 = expected.get(key);
             Object o2 = actual.get(key);
 
@@ -129,16 +129,19 @@ public class TestRasterer {
         }
     }
 
-    /** Generates an actual/expected message from a base message, an actual map,
-     *  and an expected map.
+    /**
+     * Generates an actual/expected message from a base message, an actual map,
+     * and an expected map.
      */
     private String genDiffErrMsg(String basemsg, Map<String, Object> expected,
                                  Map<String, Object> actual) {
         return basemsg + "Expected: " + mapToString(expected) + ", but got\n"
-                       + "Actual  : " + mapToString(actual);
+                + "Actual  : " + mapToString(actual);
     }
 
-    /** Converts a Rasterer input or output map to its string representation. */
+    /**
+     * Converts a Rasterer input or output map to its string representation.
+     */
     private String mapToString(Map<String, ?> m) {
         StringJoiner sj = new StringJoiner(", ", "{", "}");
 

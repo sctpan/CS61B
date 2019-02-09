@@ -9,8 +9,9 @@ import java.util.Map;
  */
 public class Rasterer {
     public static final double topDPP = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / MapServer.TILE_SIZE;
+
     private class QueryBox {
-        private double ullon, ullat, lrlon,lrlat;
+        private double ullon, ullat, lrlon, lrlat;
         private double w, h;
 
         public QueryBox(double ullat, double ullon, double lrlat, double lrlon, double w, double h) {
@@ -25,6 +26,7 @@ public class Rasterer {
 
     private class Area {
         private double ullon, ullat, lrlon, lrlat;
+
         public Area(double ullon, double ullat, double lrlon, double lrlat) {
             this.ullon = ullon;
             this.ullat = ullat;
@@ -42,6 +44,7 @@ public class Rasterer {
                     '}';
         }
     }
+
     private int depth;
     private double rasterUllon, rasterUllat, rasterLrlon, rasterLrlat;
     private int ulx, uly, lrx, lry;
@@ -53,7 +56,7 @@ public class Rasterer {
 
     private int pow2(int n) {
         int res = 1;
-        while(n-- > 0) {
+        while (n-- > 0) {
             res = res * 2;
         }
         return res;
@@ -63,10 +66,10 @@ public class Rasterer {
         setDepth(queryBox);
         boolean findul = false;
         boolean findlr = false;
-        for(int i=0; i<pow2(depth); i++) {
-            for(int j=0; j<pow2(depth); j++) {
-                Area area = getFileArea(depth,i,j);
-                if(area.lrlat < queryBox.ullat && area.lrlon > queryBox.ullon) {
+        for (int i = 0; i < pow2(depth); i++) {
+            for (int j = 0; j < pow2(depth); j++) {
+                Area area = getFileArea(depth, i, j);
+                if (area.lrlat < queryBox.ullat && area.lrlon > queryBox.ullon) {
 //                    System.out.println("ularea: " + area);
                     rasterUllat = area.ullat;
                     rasterUllon = area.ullon;
@@ -76,15 +79,15 @@ public class Rasterer {
                     break;
                 }
             }
-            if(findul) {
+            if (findul) {
                 break;
             }
         }
 
-        for(int i=pow2(depth)-1; i>=0; i--) {
-            for(int j=pow2(depth)-1; j>=0; j--) {
-                Area area = getFileArea(depth,i,j);
-                if(area.ullat > queryBox.lrlat && area.ullon < queryBox.lrlon) {
+        for (int i = pow2(depth) - 1; i >= 0; i--) {
+            for (int j = pow2(depth) - 1; j >= 0; j--) {
+                Area area = getFileArea(depth, i, j);
+                if (area.ullat > queryBox.lrlat && area.ullon < queryBox.lrlon) {
 //                    System.out.println("lrarea: " + area);
                     rasterLrlat = area.lrlat;
                     rasterLrlon = area.lrlon;
@@ -94,7 +97,7 @@ public class Rasterer {
                     break;
                 }
             }
-            if(findlr) {
+            if (findlr) {
                 break;
             }
         }
@@ -103,10 +106,10 @@ public class Rasterer {
     }
 
     private void getFilenames() {
-        filenames = new String[lry-uly+1][lrx-ulx+1];
-        for(int i=0; i<=lry-uly; i++) {
-            for(int j=0; j<=lrx-ulx; j++) {
-                filenames[i][j] = "d" + depth + "_x" + (ulx+j) + "_y" + (uly+i) + ".png";
+        filenames = new String[lry - uly + 1][lrx - ulx + 1];
+        for (int i = 0; i <= lry - uly; i++) {
+            for (int j = 0; j <= lrx - ulx; j++) {
+                filenames[i][j] = "d" + depth + "_x" + (ulx + j) + "_y" + (uly + i) + ".png";
 //                System.out.print(filenames[i][j] + " ");
             }
 //            System.out.println("");
@@ -115,8 +118,8 @@ public class Rasterer {
 
     private void setDepth(QueryBox queryBox) {
         double dpp = (queryBox.lrlon - queryBox.ullon) / queryBox.w;
-        for(int i=0; i<=7; i++) {
-            if(calDepthDPP(i) <= dpp) {
+        for (int i = 0; i <= 7; i++) {
+            if (calDepthDPP(i) <= dpp) {
                 depth = i;
                 return;
             }
@@ -139,25 +142,23 @@ public class Rasterer {
     }
 
 
-
     /**
      * Takes a user query and finds the grid of images that best matches the query. These
      * images will be combined into one big image (rastered) by the front end. <br>
-     *
-     *     The grid of images must obey the following properties, where image in the
-     *     grid is referred to as a "tile".
-     *     <ul>
-     *         <li>The tiles collected must cover the most longitudinal distance per pixel
-     *         (LonDPP) possible, while still covering less than or equal to the amount of
-     *         longitudinal distance per pixel in the query box for the user viewport size. </li>
-     *         <li>Contains all tiles that intersect the query bounding box that fulfill the
-     *         above condition.</li>
-     *         <li>The tiles must be arranged in-order to reconstruct the full image.</li>
-     *     </ul>
+     * <p>
+     * The grid of images must obey the following properties, where image in the
+     * grid is referred to as a "tile".
+     * <ul>
+     * <li>The tiles collected must cover the most longitudinal distance per pixel
+     * (LonDPP) possible, while still covering less than or equal to the amount of
+     * longitudinal distance per pixel in the query box for the user viewport size. </li>
+     * <li>Contains all tiles that intersect the query bounding box that fulfill the
+     * above condition.</li>
+     * <li>The tiles must be arranged in-order to reconstruct the full image.</li>
+     * </ul>
      *
      * @param params Map of the HTTP GET request's query parameters - the query box and
      *               the user viewport width and height.
-     *
      * @return A map of results for the front end as specified: <br>
      * "render_grid"   : String[][], the files to display. <br>
      * "raster_ul_lon" : Number, the bounding upper left longitude of the rastered image. <br>
@@ -166,7 +167,7 @@ public class Rasterer {
      * "raster_lr_lat" : Number, the bounding lower right latitude of the rastered image. <br>
      * "depth"         : Number, the depth of the nodes of the rastered image <br>
      * "query_success" : Boolean, whether the query was able to successfully complete; don't
-     *                    forget to set this to true on success! <br>
+     * forget to set this to true on success! <br>
      */
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
         System.out.println(params);

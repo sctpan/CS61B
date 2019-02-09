@@ -26,25 +26,25 @@ public class CSCourseDBHandler extends DefaultHandler {
      * Called at the beginning of an element. Typically, you will want to handle each element in
      * here, and you may want to track the parent element.
      *
-     * @param uri The Namespace URI, or the empty string if the element has no Namespace URI or if
-     * Namespace processing is not being performed.
-     * @param localName The local name (without prefix), or the empty string if Namespace processing
-     * is not being performed.
-     * @param qName The qualified name (with prefix), or the empty string if qualified names are not
-     * available.
+     * @param uri        The Namespace URI, or the empty string if the element has no Namespace URI or if
+     *                   Namespace processing is not being performed.
+     * @param localName  The local name (without prefix), or the empty string if Namespace processing
+     *                   is not being performed.
+     * @param qName      The qualified name (with prefix), or the empty string if qualified names are not
+     *                   available.
      * @param attributes The attributes attached to the element. If there are no attributes, it
-     * shall be an empty Attributes object.
+     *                   shall be an empty Attributes object.
      * @throws SAXException Any SAX exception, possibly wrapping another exception.
      * @see Attributes
      */
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes)
-        throws SAXException {
+            throws SAXException {
 
         if (qName.equals("course")) {
             activeState = "course";
             CSCourseDB.Course c = new CSCourseDB.Course(attributes.getValue("id"),
-                attributes.getValue("division"));
+                    attributes.getValue("division"));
             db.addCourse(c);
             lastCourse = c;
         } else if (qName.equals("req")) {
@@ -63,12 +63,12 @@ public class CSCourseDBHandler extends DefaultHandler {
      * Receive notification of the end of an element. You may want to take specific terminating
      * actions here, like finalizing vertices or edges found.
      *
-     * @param uri The Namespace URI, or the empty string if the element has no Namespace URI or if
-     * Namespace processing is not being performed.
+     * @param uri       The Namespace URI, or the empty string if the element has no Namespace URI or if
+     *                  Namespace processing is not being performed.
      * @param localName The local name (without prefix), or the empty string if Namespace processing
-     * is not being performed.
-     * @param qName The qualified name (with prefix), or the empty string if qualified names are not
-     * available.
+     *                  is not being performed.
+     * @param qName     The qualified name (with prefix), or the empty string if qualified names are not
+     *                  available.
      * @throws SAXException Any SAX exception, possibly wrapping another exception.
      */
     @Override

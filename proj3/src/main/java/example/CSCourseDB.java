@@ -28,7 +28,7 @@ public class CSCourseDB {
             File in = new File(dbPath);
             saxParser.parse(in, prereqHandler);
         } catch (NullPointerException | ParserConfigurationException | SAXException | IOException
-            e) {
+                e) {
             e.printStackTrace();
         }
     }
@@ -46,7 +46,7 @@ public class CSCourseDB {
      * Add a prerequisite to the database. A student must take "from" before "to".
      *
      * @param from course that must be taken before "to"
-     * @param to course that can be taken after "from"
+     * @param to   course that can be taken after "from"
      */
     void addPrereq(String from, String to) {
         this.courses.get(to).prereqs.add(from);
@@ -91,10 +91,10 @@ public class CSCourseDB {
                 sb.append("* Extra Information:\n");
                 for (Map.Entry<String, String> entry : extraInfo.entrySet()) {
                     sb.append('\t')
-                        .append(entry.getKey())
-                        .append(" = ")
-                        .append(entry.getValue())
-                        .append('\n');
+                            .append(entry.getKey())
+                            .append(" = ")
+                            .append(entry.getValue())
+                            .append('\n');
                 }
             }
 
@@ -113,6 +113,7 @@ public class CSCourseDB {
 
     /**
      * Entrypoint. Creates the DB, prints all course information and exits.
+     *
      * @param args UNUSED
      */
     public static void main(String[] args) {

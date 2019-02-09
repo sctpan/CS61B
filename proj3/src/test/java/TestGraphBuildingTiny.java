@@ -32,9 +32,10 @@ public class TestGraphBuildingTiny {
         initialized = true;
     }
 
-    /** All nodes in the tiny-clean file are valid, so the clean method
-     *  should not remove any vertices for this graph, i.e. all 7 nodes
-     *  should survive the cleaning process.
+    /**
+     * All nodes in the tiny-clean file are valid, so the clean method
+     * should not remove any vertices for this graph, i.e. all 7 nodes
+     * should survive the cleaning process.
      */
     @Test
     public void testNodeCountTinyGraph() {
@@ -77,7 +78,7 @@ public class TestGraphBuildingTiny {
         double lon = 0.4;
         double lat = 38.51;
         assertEquals("Make sure you're using the great circle distance, "
-                + "especially if your actual value is 46",
+                        + "especially if your actual value is 46",
                 55L, graphTiny.closest(lon, lat));
     }
 }

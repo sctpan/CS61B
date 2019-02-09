@@ -27,6 +27,7 @@ public class GraphDB {
     /**
      * Example constructor shows how to create and start an XML parser.
      * You do not need to modify this constructor, but you're welcome to do so.
+     *
      * @param dbPath Path to the XML file to be parsed.
      */
     private Map<String, Node> nodes = new LinkedHashMap<>();
@@ -55,6 +56,26 @@ public class GraphDB {
 
         public void setLocation(String location) {
             this.location = location;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public List<String> getNeighbors() {
+            return neighbors;
+        }
+
+        public List<String> getEdges() {
+            return edges;
+        }
+
+        public double getLon() {
+            return lon;
+        }
+
+        public double getLat() {
+            return lat;
         }
     }
 
@@ -102,7 +123,6 @@ public class GraphDB {
     }
 
 
-
     public GraphDB(String dbPath) {
         try {
             File inputFile = new File(dbPath);
@@ -129,6 +149,7 @@ public class GraphDB {
 
     /**
      * Helper to process strings into their "cleaned" form, ignoring punctuation and capitalization.
+     *
      * @param s Input string.
      * @return Cleaned string.
      */
@@ -140,30 +161,31 @@ public class GraphDB {
     }
 
     /**
-     *  Remove nodes with no connections from the graph.
-     *  While this does not guarantee that any two nodes in the remaining graph are connected,
-     *  we can reasonably assume this since typically roads are connected.
+     * Remove nodes with no connections from the graph.
+     * While this does not guarantee that any two nodes in the remaining graph are connected,
+     * we can reasonably assume this since typically roads are connected.
      */
     private void clean() {
         List<String> alones = new ArrayList<>();
-        for(String id : nodes.keySet()) {
-            if(nodes.get(id).neighbors.isEmpty()) {
+        for (String id : nodes.keySet()) {
+            if (nodes.get(id).neighbors.isEmpty()) {
                 alones.add(id);
             }
         }
-        for(String id : alones) {
+        for (String id : alones) {
             nodes.remove(id);
         }
     }
 
     /**
      * Returns an iterable of all vertex IDs in the graph.
+     *
      * @return An iterable of id's of all vertices in the graph.
      */
     Iterable<Long> vertices() {
         //YOUR CODE HERE, this currently returns only an empty list.
         List<Long> vertices = new ArrayList<Long>();
-        for(String id : nodes.keySet()) {
+        for (String id : nodes.keySet()) {
             vertices.add(Long.parseLong(id));
         }
         return vertices;
@@ -171,13 +193,14 @@ public class GraphDB {
 
     /**
      * Returns ids of all vertices adjacent to v.
+     *
      * @param v The id of the vertex we are looking adjacent to.
      * @return An iterable of the ids of the neighbors of v.
      */
     Iterable<Long> adjacent(long v) {
         List<Long> vertices = new ArrayList<Long>();
         Node node = nodes.get(Long.toString(v));
-        for(String id : node.neighbors) {
+        for (String id : node.neighbors) {
             vertices.add(Long.parseLong(id));
         }
         return vertices;
@@ -187,6 +210,7 @@ public class GraphDB {
      * Returns the great-circle distance between vertices v and w in miles.
      * Assumes the lon/lat methods are implemented properly.
      * <a href="https://www.movable-type.co.uk/scripts/latlong.html">Source</a>.
+     *
      * @param v The id of the first vertex.
      * @param w The id of the second vertex.
      * @return The great-circle distance between the two locations from the graph.
@@ -214,6 +238,7 @@ public class GraphDB {
      * end point.
      * Assumes the lon/lat methods are implemented properly.
      * <a href="https://www.movable-type.co.uk/scripts/latlong.html">Source</a>.
+     *
      * @param v The id of the first vertex.
      * @param w The id of the second vertex.
      * @return The initial bearing between the vertices.
@@ -236,6 +261,7 @@ public class GraphDB {
 
     /**
      * Returns the vertex closest to the given longitude and latitude.
+     *
      * @param lon The target longitude.
      * @param lat The target latitude.
      * @return The id of the node in the graph closest to the target.
@@ -243,11 +269,11 @@ public class GraphDB {
     long closest(double lon, double lat) {
         double min = distance(MapServer.ROOT_ULLON, MapServer.ROOT_ULLAT, MapServer.ROOT_LRLON, MapServer.ROOT_LRLAT);
         String minId = null;
-        for(String id : nodes.keySet()) {
+        for (String id : nodes.keySet()) {
             Node node = nodes.get(id);
             double nlon = node.lon;
             double nlat = node.lat;
-            if(distance(lon, lat, nlon, nlat) < min) {
+            if (distance(lon, lat, nlon, nlat) < min) {
                 min = distance(lon, lat, nlon, nlat);
                 minId = node.id;
             }
@@ -257,6 +283,7 @@ public class GraphDB {
 
     /**
      * Gets the longitude of a vertex.
+     *
      * @param v The id of the vertex.
      * @return The longitude of the vertex.
      */
@@ -267,6 +294,7 @@ public class GraphDB {
 
     /**
      * Gets the latitude of a vertex.
+     *
      * @param v The id of the vertex.
      * @return The latitude of the vertex.
      */
