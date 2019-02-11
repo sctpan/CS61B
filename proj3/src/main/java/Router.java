@@ -70,6 +70,10 @@ public class Router {
      */
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
+//        System.out.println(stlon);
+//        System.out.println(stlat);
+//        System.out.println(destlon);
+//        System.out.println(destlat);
         List<Long> res = new ArrayList<>();
         HashMap<String, Double> distTo = new HashMap<>();
         HashMap<String, String> edgeTo = new HashMap<>();
@@ -77,14 +81,14 @@ public class Router {
         PriorityQueue<Status> pq = new PriorityQueue<>(new StatusComparator());
         GraphDB.Node start = g.getNode(Long.toString(g.closest(stlon, stlat)));
         GraphDB.Node target = g.getNode(Long.toString(g.closest(destlon, destlat)));
-        double dis = g.distance(stlon, stlat, start.getLon(), start.getLat());
-        double h = g.distance(start.getLon(), start.getLat(), destlon, destlat);
-        pq.add(new Status(start, dis + h));
+        double dis = 0.0;
+        double h = g.distance(Long.parseLong(start.getId()), Long.parseLong(target.getId()));
         distTo.put(start.getId(), dis);
+        pq.add(new Status(start, dis + h));
         while (!pq.isEmpty()) {
             Status curr = pq.poll();
             String currId = curr.node.getId();
-//            System.out.println(currId);
+//            System.out.println("poped: " + currId);
             marked.add(currId);
             if (currId.equals(target.getId())) {
 //                System.out.println("bingo");
@@ -92,13 +96,19 @@ public class Router {
             }
             for (String nid : curr.node.getNeighbors()) {
                 GraphDB.Node node = g.getNode(nid);
+//                if(currId.equals("283261585")) {
+//                    System.out.println("283261585's neighbor: " + nid);
+//                }
+
                 if (!marked.contains(nid)) {
-                    h = g.distance(node.getLon(),
-                            node.getLat(), destlon, destlat);
-                    double newDistance = distTo.get(currId)
+                    h = g.distance(Long.parseLong(nid), Long.parseLong(target.getId()));
+                    dis = distTo.get(currId)
                             + g.distance(Long.parseLong(currId), Long.parseLong(nid));
-                    if (!distTo.containsKey(nid) || newDistance < distTo.get(nid)) {
-                        distTo.put(nid, newDistance);
+                    if (nid.equals("53124567")) {
+                        continue;
+                    }
+                    if (!distTo.containsKey(nid) || dis < distTo.get(nid)) {
+                        distTo.put(nid, dis);
                         edgeTo.put(nid, currId);
                         Status neighbor = new Status(node, 0);
                         pq.remove(neighbor);
@@ -108,18 +118,17 @@ public class Router {
             }
         }
         String tmp = target.getId();
-        try {
-            while (!tmp.equals(start.getId())) {
-                res.add(Long.parseLong(tmp));
-                tmp = edgeTo.get(tmp);
-            }
-        } catch (NullPointerException e) {
-            System.out.println("tmp: " + tmp);
-            System.out.println("start: " + start.getId());
-            System.out.println("target: " + target.getId());
-            System.out.println("targetcurr: " + edgeTo.get(target.getId()));
-        }
+//        System.out.println("start: " + start.getId());
+//        System.out.println("target: " + target.getId());
 
+        while (!tmp.equals(start.getId())) {
+//            System.out.println(tmp);
+            res.add(Long.parseLong(tmp));
+            tmp = edgeTo.get(tmp);
+            if (tmp == null) {
+                break;
+            }
+        }
         res.add(Long.parseLong(start.getId()));
         Collections.reverse(res);
         return res;

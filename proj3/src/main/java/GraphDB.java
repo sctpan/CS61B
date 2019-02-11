@@ -269,7 +269,7 @@ public class GraphDB {
      */
     long closest(double lon, double lat) {
         double min = distance(MapServer.ROOT_ULLON, MapServer.ROOT_ULLAT,
-                MapServer.ROOT_LRLON, MapServer.ROOT_LRLAT);
+                MapServer.ROOT_LRLON, MapServer.ROOT_LRLAT) + 10086;
         String minId = null;
         for (String id : nodes.keySet()) {
             Node node = nodes.get(id);
