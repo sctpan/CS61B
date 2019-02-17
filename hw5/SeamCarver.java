@@ -1,6 +1,7 @@
 import edu.princeton.cs.algs4.Picture;
 
-import java.awt.*;
+import java.awt.Color;
+
 
 public class SeamCarver {
     private Picture picture;
@@ -17,7 +18,7 @@ public class SeamCarver {
     }
 
     public Picture picture() {
-        return picture;
+        return new Picture(picture);
     }
 
     public int width() {
@@ -176,10 +177,28 @@ public class SeamCarver {
 
 
     public void removeHorizontalSeam(int[] seam) {
+        check(seam);
         picture = SeamRemover.removeHorizontalSeam(picture, seam);
     }
 
     public void removeVerticalSeam(int[] seam) {
+        check(seam);
         picture = SeamRemover.removeVerticalSeam(picture, seam);
+    }
+
+    private void check(int[] seam) {
+        if (picture == null) {
+            throw new NullPointerException("Input seam array cannot be null");
+        } else if (picture.height() == 1) {
+            throw new IllegalArgumentException("Image height is 1");
+        } else if (seam.length != picture.height()) {
+            throw new IllegalArgumentException("Seam length does not match image height");
+        } else {
+            for (int var2 = 0; var2 < seam.length - 2; ++var2) {
+                if (Math.abs(seam[var2] - seam[var2 + 1]) > 1) {
+                    throw new IllegalArgumentException("Invalid seam, consecutive horizontal indices are greater than one apart");
+                }
+            }
+        }
     }
 }
