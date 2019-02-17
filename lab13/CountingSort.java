@@ -1,8 +1,9 @@
+import java.util.Arrays;
+
 /**
  * Class with 2 ways of doing Counting sort, one naive way and one "better" way
  *
  * @author Akhil Batra, Alexander Hwang
- *
  **/
 public class CountingSort {
     /**
@@ -66,7 +67,70 @@ public class CountingSort {
      * @param arr int array that will be sorted
      */
     public static int[] betterCountingSort(int[] arr) {
-        // TODO make counting sort work with arrays containing negative numbers.
-        return null;
+        int negCount = 0, posCount = 0;
+        for (int i : arr) {
+            if (i < 0) {
+                negCount++;
+            } else {
+                posCount++;
+            }
+        }
+        if (negCount == 0) {
+            return naiveCountingSort(arr);
+        }
+        if (posCount == 0) {
+            return negCountingSort(arr);
+        }
+        int[] neg = new int[negCount];
+        int[] pos = new int[posCount];
+        int negIndex = 0, posIndex = 0;
+        for (int i : arr) {
+            if (i < 0) {
+                neg[negIndex] = i;
+                negIndex++;
+            } else {
+                pos[posIndex] = i;
+                posIndex++;
+            }
+        }
+        int[] sortedNeg = negCountingSort(neg);
+        int[] sortedPos = naiveCountingSort(pos);
+        int[] sorted = new int[sortedNeg.length + sortedPos.length];
+        int sortedIndex = 0;
+        for (int i : sortedNeg) {
+            sorted[sortedIndex] = i;
+            sortedIndex++;
+        }
+
+        for (int i : sortedPos) {
+            sorted[sortedIndex] = i;
+            sortedIndex++;
+        }
+        return sorted;
+    }
+
+    private static int[] negCountingSort(int[] arr) {
+        int[] absArr = naiveCountingSort(flip(arr));
+        reverse(absArr);
+        return flip(absArr);
+    }
+
+    private static int[] flip(int[] arr) {
+        int[] flipped = new int[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            flipped[i] = -arr[i];
+        }
+        return flipped;
+    }
+
+    private static void reverse(int[] arr) {
+        int i = 0, j = arr.length - 1;
+        while (i < j) {
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            i++;
+            j--;
+        }
     }
 }
