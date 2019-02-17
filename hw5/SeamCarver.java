@@ -177,32 +177,27 @@ public class SeamCarver {
 
 
     public void removeHorizontalSeam(int[] seam) {
-        if (picture.width() == 1) {
-            throw new java.lang.IllegalArgumentException();
-        } else if (seam.length != picture.width()) {
-            throw new java.lang.IllegalArgumentException();
+        if (check(seam)) {
+            picture = SeamRemover.removeHorizontalSeam(picture, seam);
         } else {
-            for (int var2 = 0; var2 < seam.length - 2; ++var2) {
-                if (Math.abs(seam[var2] - seam[var2 + 1]) > 1) {
-                    throw new java.lang.IllegalArgumentException();
-                }
-            }
+            throw new java.lang.IllegalArgumentException();
         }
-        picture = SeamRemover.removeHorizontalSeam(picture, seam);
     }
 
     public void removeVerticalSeam(int[] seam) {
-        if (picture.height() == 1) {
-            throw new java.lang.IllegalArgumentException();
-        } else if (seam.length != picture.height()) {
-            throw new java.lang.IllegalArgumentException();
+        if (check(seam)) {
+            picture = SeamRemover.removeVerticalSeam(picture, seam);
         } else {
-            for (int var2 = 0; var2 < seam.length - 2; ++var2) {
-                if (Math.abs(seam[var2] - seam[var2 + 1]) > 1) {
-                    throw new java.lang.IllegalArgumentException();
-                }
+            throw new java.lang.IllegalArgumentException();
+        }
+    }
+
+    private boolean check(int[] seam) {
+        for (int i = 0; i < seam.length - 2; ++i) {
+            if (Math.abs(seam[i] - seam[i + 1]) > 1) {
+                return false;
             }
         }
-        picture = SeamRemover.removeVerticalSeam(picture, seam);
+        return true;
     }
 }
