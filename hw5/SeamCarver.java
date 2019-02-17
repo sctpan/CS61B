@@ -4,10 +4,10 @@ import java.awt.*;
 
 public class SeamCarver {
     private Picture picture;
-    double[][] energys;
+    private double[][] energys;
 
     public SeamCarver(Picture picture) {
-        this.picture = picture;
+        this.picture = new Picture(picture);
         energys = new double[width()][height()];
         for (int i = 0; i < width(); i++) {
             for (int j = 0; j < height(); j++) {
@@ -62,6 +62,13 @@ public class SeamCarver {
         for (int i = 0; i < height; i++) {
             M[i][0] = energy(0, i);
         }
+        if (height == 1) {
+            int[] res = new int[width];
+            for (int i = 0; i < width; i++) {
+                res[i] = 0;
+            }
+            return res;
+        }
         for (int i = 1; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 double min;
@@ -109,6 +116,13 @@ public class SeamCarver {
         double[][] M = new double[height][width];
         for (int i = 0; i < width; i++) {
             M[0][i] = energy(i, 0);
+        }
+        if (width == 1) {
+            int[] res = new int[height];
+            for (int i = 0; i < height; i++) {
+                res[i] = 0;
+            }
+            return res;
         }
         for (int i = 1; i < height; i++) {
             for (int j = 0; j < width; j++) {
