@@ -14,7 +14,7 @@ public class RadixSort {
      * @return String[] the sorted array
      */
     public static String[] sort(String[] asciis) {
-        if(asciis.length == 0 || asciis.length == 1) {
+        if (asciis.length == 0 || asciis.length == 1) {
             return asciis;
         }
         int max = 0;
@@ -50,8 +50,10 @@ public class RadixSort {
         for (String s : asciis) {
             StringBuffer sbu = new StringBuffer();
             sbu.append(s);
-            for (int i = sbu.length() - 1; sbu.charAt(i) == (char) 1; i--) {
-                sbu.deleteCharAt(i);
+            if (s.length() != 0) {
+                for (int i = sbu.length() - 1; sbu.charAt(i) == (char) 1; i--) {
+                    sbu.deleteCharAt(i);
+                }
             }
             res[index++] = sbu.toString();
         }
