@@ -177,7 +177,7 @@ public class SeamCarver {
 
 
     public void removeHorizontalSeam(int[] seam) {
-        if(picture.width() == 1) {
+        if (picture.width() == 1) {
             return;
         }
         if (check(seam)) {
@@ -188,7 +188,7 @@ public class SeamCarver {
     }
 
     public void removeVerticalSeam(int[] seam) {
-        if(picture.height() == 1) {
+        if (picture.height() == 1) {
             return;
         }
         if (check(seam)) {
