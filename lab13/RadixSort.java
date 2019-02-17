@@ -50,10 +50,8 @@ public class RadixSort {
         for (String s : asciis) {
             StringBuffer sbu = new StringBuffer();
             sbu.append(s);
-            if (s.length() != 0) {
-                for (int i = sbu.length() - 1; sbu.charAt(i) == (char) 1; i--) {
-                    sbu.deleteCharAt(i);
-                }
+            for (int i = sbu.length() - 1; i >= 0 && sbu.charAt(i) == (char) 1; i--) {
+                sbu.deleteCharAt(i);
             }
             res[index++] = sbu.toString();
         }
