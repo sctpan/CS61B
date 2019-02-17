@@ -67,6 +67,9 @@ public class CountingSort {
      * @param arr int array that will be sorted
      */
     public static int[] betterCountingSort(int[] arr) {
+        if(arr.length == 1 || arr.length == 0) {
+            return arr;
+        }
         int negCount = 0, posCount = 0;
         for (int i : arr) {
             if (i < 0) {
