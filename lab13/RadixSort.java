@@ -36,7 +36,7 @@ public class RadixSort {
             sbu.append(s);
             if (s.length() < len) {
                 for (int i = 0; i < len - s.length(); i++) {
-                    sbu.append((char) 1);
+                    sbu.append((char) 0);
                 }
             }
             res[index++] = sbu.toString();
@@ -50,7 +50,7 @@ public class RadixSort {
         for (String s : asciis) {
             StringBuffer sbu = new StringBuffer();
             sbu.append(s);
-            for (int i = sbu.length() - 1; i >= 0 && sbu.charAt(i) == (char) 1; i--) {
+            for (int i = sbu.length() - 1; i >= 0 && sbu.charAt(i) == (char) 0; i--) {
                 sbu.deleteCharAt(i);
             }
             res[index++] = sbu.toString();
