@@ -5,6 +5,6 @@
 
 + Lab 9 - Lab 13
 + HW 1 - HW 5
-+ Proj1A, Proj1B, Proj3
++ Project 1A, Project 1B, Project 3
 
 以上练习均通过[autograder](gradescope.com)测试，可供参考
