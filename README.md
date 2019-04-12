@@ -7,4 +7,4 @@
 + HW 1 - HW 5
 + Project 1A, Project 1B, Project 3
 
-以上练习均通过[autograder](gradescope.com)测试，可供参考
+以上练习均通过[autograder](https://www.gradescope.com/courses/20666)测试，可供参考
